@@ -79,7 +79,11 @@ static NSString *const ATLAddressBarParticipantAttributeName = @"ATLAddressBarPa
     [super viewWillAppear:animated];
     
     if (!self.hasAppeared) {
-        [self.tableView registerClass:self.cellClass ? self.cellClass : [ATLParticipantTableViewCell class] forCellReuseIdentifier:ATLMParticpantCellIdentifier];
+        if (self.cellClass) {
+            [self.tableView registerNib:[UINib nibWithNibName:NSStringFromClass(self.class) bundle:nil] forCellReuseIdentifier:ATLMParticpantCellIdentifier];
+        }
+        else
+            [self.tableView registerClass:[ATLParticipantTableViewCell class] forCellReuseIdentifier:ATLMParticpantCellIdentifier];
     }
 }
 
