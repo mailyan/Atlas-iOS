@@ -29,6 +29,7 @@
 @property (nonatomic) UITableView *tableView;
 @property (nonatomic) NSArray *participants;
 @property (nonatomic, getter=isDisabled) BOOL disabled;
+@property (nonatomic) BOOL hasAppeared;
 
 @end
 
@@ -65,13 +66,27 @@ static NSString *const ATLAddressBarParticipantAttributeName = @"ATLAddressBarPa
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     self.tableView.rowHeight = 56;
-    [self.tableView registerClass:[ATLParticipantTableViewCell class] forCellReuseIdentifier:ATLMParticpantCellIdentifier];
     self.tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
     self.tableView.hidden = YES;
     [self.view addSubview:self.tableView];
     
     [self configureLayoutConstraintsForAddressBarView];
     [self configureLayoutConstraintsForTableView];
+}
+
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    if (!self.hasAppeared) {
+        [self.tableView registerClass:self.cellClass ? self.cellClass : [ATLParticipantTableViewCell class] forCellReuseIdentifier:ATLMParticpantCellIdentifier];
+    }
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    self.hasAppeared = YES;
 }
 
 #pragma mark - Public Method Implementation
@@ -151,12 +166,16 @@ static NSString *const ATLAddressBarParticipantAttributeName = @"ATLAddressBarPa
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    ATLParticipantTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:ATLMParticpantCellIdentifier];
-    cell.titleFont = ATLMediumFont(16);
-    cell.titleColor = ATLBlueColor();
-    cell.shouldBoldTitle = NO;
+    UITableViewCell <ATLParticipantPresenting> *cell = [tableView dequeueReusableCellWithIdentifier:ATLMParticpantCellIdentifier];
     id<ATLParticipant> participant = self.participants[indexPath.row];
     [cell presentParticipant:participant withSortType:ATLParticipantPickerSortTypeFirstName shouldShowAvatarItem:self.shouldShowParticipantAvatars];
+    if ([cell isKindOfClass:[ATLParticipantTableViewCell class]]) {
+        ATLParticipantTableViewCell* participantCell = (ATLParticipantTableViewCell*)cell;
+        participantCell.titleFont = ATLMediumFont(16);
+        participantCell.titleColor = ATLBlueColor();
+        participantCell.shouldBoldTitle = NO;
+        return participantCell;
+    }
     return cell;
 }
 
