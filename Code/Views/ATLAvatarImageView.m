@@ -168,18 +168,28 @@ NSString *const ATLAvatarImageViewAccessibilityLabel = @"ATLAvatarImageViewAcces
 
 - (void)fetchImageFromRemoteImageURL:(NSURL *)remoteImageURL
 {
-    self.downloadTask = [[NSURLSession sharedSession] downloadTaskWithURL:remoteImageURL completionHandler:^(NSURL *location, NSURLResponse *response, NSError *error) {
-        if (!error && location) {
-            __block UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:location]];
-            if (image) {
-                [[[self class] sharedImageCache] setObject:image forKey:remoteImageURL.absoluteString cost:0];
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [self updateWithImage:image forRemoteImageURL:remoteImageURL];
-                });
+    if (self.avatarLoader)
+    {
+        __weak typeof (self) weakSelf = self;
+        [self.avatarLoader fetchAvatarWithAvatarUR:remoteImageURL completion:^(UIImage * _Nullable avatar) {
+            if (avatar)
+            {
+                [weakSelf updateWithImage:avatar forRemoteImageURL:remoteImageURL];
             }
-        }
-    }];
-    [self.downloadTask resume];
+        }];
+    }
+//    self.downloadTask = [[NSURLSession sharedSession] downloadTaskWithURL:remoteImageURL completionHandler:^(NSURL *location, NSURLResponse *response, NSError *error) {
+//        if (!error && location) {
+//            __block UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:location]];
+//            if (image) {
+//                [[[self class] sharedImageCache] setObject:image forKey:remoteImageURL.absoluteString cost:0];
+//                dispatch_async(dispatch_get_main_queue(), ^{
+//                    [self updateWithImage:image forRemoteImageURL:remoteImageURL];
+//                });
+//            }
+//        }
+//    }];
+//    [self.downloadTask resume];
 }
 
 - (void)updateWithImage:(UIImage *)image forRemoteImageURL:(NSURL *)remoteImageURL;

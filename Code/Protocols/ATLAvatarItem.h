@@ -41,4 +41,11 @@
  */
 @property (nonatomic, readonly, nullable) NSString *avatarInitials;
 
+
+@end
+
+@protocol ATLAvatarLoader <NSObject>
+
+- (void)fetchAvatarWithAvatarUR:(NSURL*_Nullable) avatarURL completion:(nullable void(^)(UIImage*_Nullable avatar)) completion;
+
 @end
