@@ -102,6 +102,7 @@
 		5AEFC5CC1B79834300ADE4EC /* boatgif.gif in Resources */ = {isa = PBXBuildFile; fileRef = 5AEFC5CA1B79834300ADE4EC /* boatgif.gif */; };
 		5AF32FD31AA59C39005C13D7 /* ATLUserMockTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 5AF32FD21AA59C39005C13D7 /* ATLUserMockTest.m */; };
 		A4B49FAD5E4B7073202BEBAA /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DE31FA9B1906CEA04D0C891 /* Pods.framework */; };
+		BF6CB5DD1CC659D3001D7D6F /* ATLAvatarLoader.h in Headers */ = {isa = PBXBuildFile; fileRef = BF6CB5DC1CC659D3001D7D6F /* ATLAvatarLoader.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C4ACEDA790A898EA785975DF /* Pods_StoryboardTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A3F7BDFF110891D675B97C1D /* Pods_StoryboardTests.framework */; };
 		CCDB9994E3E23DC53AEB82CE /* Pods_ProgrammaticTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55792E6A592D8AB80A1C483E /* Pods_ProgrammaticTests.framework */; };
 		D0294DE71A93F37A00702856 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D0294DE61A93F37A00702856 /* Info.plist */; };
@@ -290,6 +291,7 @@
 		7A6CF4DD6C5461F36059EAD8 /* Pods-ProgrammaticTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ProgrammaticTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ProgrammaticTests/Pods-ProgrammaticTests.debug.xcconfig"; sourceTree = "<group>"; };
 		91B6B223427CE73B327592CB /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		A3F7BDFF110891D675B97C1D /* Pods_StoryboardTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_StoryboardTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		BF6CB5DC1CC659D3001D7D6F /* ATLAvatarLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ATLAvatarLoader.h; sourceTree = "<group>"; };
 		D0294DD81A93F33900702856 /* UnitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UnitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D0294DE41A93F37000702856 /* ATLMediaStreamTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ATLMediaStreamTests.m; path = Tests/ATLMediaStreamTests.m; sourceTree = "<group>"; };
 		D0294DE61A93F37A00702856 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = Tests/Info.plist; sourceTree = "<group>"; };
@@ -483,6 +485,7 @@
 		253C29C71C3C9E0000ED1549 /* Protocols */ = {
 			isa = PBXGroup;
 			children = (
+				BF6CB5DC1CC659D3001D7D6F /* ATLAvatarLoader.h */,
 				253C29C81C3C9E0000ED1549 /* ATLAvatarItem.h */,
 				253C29C91C3C9E0000ED1549 /* ATLConversationPresenting.h */,
 				253C29CA1C3C9E0000ED1549 /* ATLMessagePresenting.h */,
@@ -785,6 +788,7 @@
 			files = (
 				253C2A361C3C9E0000ED1549 /* ATLConversationCollectionView.h in Headers */,
 				253C2A261C3C9E0000ED1549 /* ATLMediaInputStream.h in Headers */,
+				BF6CB5DD1CC659D3001D7D6F /* ATLAvatarLoader.h in Headers */,
 				253C2A131C3C9E0000ED1549 /* ATLConversationDataSource.h in Headers */,
 				253C2A521C3C9E0000ED1549 /* ATLPlayView.h in Headers */,
 				253C2A4A1C3C9E0000ED1549 /* ATLMessageInputToolbar.h in Headers */,
