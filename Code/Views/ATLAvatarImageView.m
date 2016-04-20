@@ -154,15 +154,15 @@ NSString *const ATLAvatarImageViewAccessibilityLabel = @"ATLAvatarImageViewAcces
         return;
     }
     
-    // Check if image is in cache
-    __block NSString *stringURL = imageURL.absoluteString;
-    UIImage *image = [[[self class] sharedImageCache] objectForKey:stringURL];
-    if (image) {
-        self.image = image;
-        return;
-    }
-    
-    // If not, fetch the image and add to the cache
+//    Check if image is in cache
+//    __block NSString *stringURL = imageURL.absoluteString;
+//    UIImage *image = [[[self class] sharedImageCache] objectForKey:stringURL];
+//    if (image) {
+//        self.image = image;
+//        return;
+//    }
+//    
+//   If not, fetch the image and add to the cache
     [self fetchImageFromRemoteImageURL:imageURL];
 }
 
