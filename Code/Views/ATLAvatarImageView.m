@@ -109,6 +109,7 @@ NSString *const ATLAvatarImageViewAccessibilityLabel = @"ATLAvatarImageViewAcces
 
 - (void)setAvatarItem:(id<ATLAvatarItem>)avatarItem
 {
+    _avatarItem = avatarItem;
     if ([avatarItem avatarImageURL]) {
         self.initialsLabel.text = nil;
         [self loadAvatarImageWithURL:[avatarItem avatarImageURL]];
@@ -119,7 +120,6 @@ NSString *const ATLAvatarImageViewAccessibilityLabel = @"ATLAvatarImageViewAcces
         self.image = nil;
         self.initialsLabel.text = avatarItem.avatarInitials;
     }
-    _avatarItem = avatarItem;
 }
 
 - (void)setInitialsColor:(UIColor *)initialsColor
