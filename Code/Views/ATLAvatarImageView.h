@@ -35,7 +35,6 @@ extern CGFloat const ATLAvatarImageDiameter;
  @disucssion The object's image or initials will be used for display in the receiver.
  */
 @property (nonatomic, null_resettable) id<ATLAvatarItem> avatarItem;
-@property (nonatomic, weak) id<ATLAvatarLoader> avatarLoader;
 
 /**
  @abstract Sets the diameter for the avatar image view. Default is 30.

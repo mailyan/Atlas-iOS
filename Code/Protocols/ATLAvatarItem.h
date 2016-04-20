@@ -42,10 +42,11 @@
 @property (nonatomic, readonly, nullable) NSString *avatarInitials;
 
 
-@end
-
-@protocol ATLAvatarLoader <NSObject>
-
+@optional
+/**
+ @abstract Asynchronously fetches remote avatar image of the receiver
+ */
 - (void)fetchAvatarWithAvatarUR:(NSURL*_Nullable) avatarURL completion:(nullable void(^)(UIImage*_Nullable avatar)) completion;
 
 @end
+

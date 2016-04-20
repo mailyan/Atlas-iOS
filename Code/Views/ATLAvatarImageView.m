@@ -168,10 +168,10 @@ NSString *const ATLAvatarImageViewAccessibilityLabel = @"ATLAvatarImageViewAcces
 
 - (void)fetchImageFromRemoteImageURL:(NSURL *)remoteImageURL
 {
-    if (self.avatarLoader)
+    if ([_avatarItem respondsToSelector:@selector(fetchAvatarWithAvatarUR:completion:)])
     {
         __weak typeof (self) weakSelf = self;
-        [self.avatarLoader fetchAvatarWithAvatarUR:remoteImageURL completion:^(UIImage * _Nullable avatar) {
+        [_avatarItem fetchAvatarWithAvatarUR:remoteImageURL completion:^(UIImage * _Nullable avatar) {
             if (avatar)
             {
                 [weakSelf updateWithImage:avatar forRemoteImageURL:remoteImageURL];
