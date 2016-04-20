@@ -178,6 +178,7 @@ NSString *const ATLAvatarImageViewAccessibilityLabel = @"ATLAvatarImageViewAcces
             }
         }];
     }
+    
 //    self.downloadTask = [[NSURLSession sharedSession] downloadTaskWithURL:remoteImageURL completionHandler:^(NSURL *location, NSURLResponse *response, NSError *error) {
 //        if (!error && location) {
 //            __block UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:location]];
