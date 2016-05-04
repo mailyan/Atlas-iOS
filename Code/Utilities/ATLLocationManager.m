@@ -28,17 +28,18 @@
 
 - (BOOL)locationServicesEnabled
 {
-    if (![CLLocationManager locationServicesEnabled]) {
-        return NO;
-    }
-    switch ([CLLocationManager authorizationStatus]) {
-        case kCLAuthorizationStatusDenied:
-        case kCLAuthorizationStatusRestricted:
-            return NO;
-        default:
-            break;
-    }
-    return YES;
+    return NO;
+//    if (![CLLocationManager locationServicesEnabled]) {
+//        return NO;
+//    }
+//    switch ([CLLocationManager authorizationStatus]) {
+//        case kCLAuthorizationStatusDenied:
+//        case kCLAuthorizationStatusRestricted:
+//            return NO;
+//        default:
+//            break;
+//    }
+//    return YES;
 }
 
 - (void)displayLocationEnablementAlert
