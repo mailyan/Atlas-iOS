@@ -265,8 +265,8 @@ static NSInteger const ATLPhotoActionSheet = 1000;
 - (void)configureControllerForConversation
 {
     // Configure avatar image display
-    NSMutableSet *otherParticipantIDs = [self.conversation.participants mutableCopy];
-    if (self.layerClient.authenticatedUser) [otherParticipantIDs removeObject:self.layerClient.authenticatedUser];
+    NSMutableSet *otherParticipantIDs = [[self.conversation.participants valueForKey:@"userID"] mutableCopy];
+    if (self.layerClient.authenticatedUser) [otherParticipantIDs removeObject:self.layerClient.authenticatedUser.userID];
     self.shouldDisplayAvatarItem = (otherParticipantIDs.count > 1) ? YES : self.shouldDisplayAvatarItemForOneOtherParticipant;
     
     // Configure message bar button enablement
@@ -813,7 +813,7 @@ static NSInteger const ATLPhotoActionSheet = 1000;
     }
 }
 
-- (void)handleApplicationWillEnterForeground:(NSNotification *)notification
+- (void)handleApplicationDidBecomeActive:(NSNotification *)notification
 {
     if (self.conversation && self.marksMessagesAsRead) {
         NSError *error;
@@ -1353,7 +1353,7 @@ static NSInteger const ATLPhotoActionSheet = 1000;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(layerClientObjectsDidChange:) name:LYRClientObjectsDidChangeNotification object:nil];
     
     // Application State Notifications
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleApplicationWillEnterForeground:) name:UIApplicationWillEnterForegroundNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleApplicationDidBecomeActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
 }
 
 @end
