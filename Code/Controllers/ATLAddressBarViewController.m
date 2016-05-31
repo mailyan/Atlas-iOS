@@ -18,6 +18,7 @@
 //  limitations under the License.
 //
 
+#import <objc/runtime.h>
 #import "ATLAddressBarViewController.h"
 #import "ATLConstants.h"
 #import "ATLAddressBarContainerView.h"
@@ -50,6 +51,10 @@ static NSString *const ATLAddressBarParticipantAttributeName = @"ATLAddressBarPa
 {
     [super viewDidLoad];
     self.shouldShowParticipantAvatars = NO;
+    self.defaultCellTitleColor = ATLBlueColor();
+    self.sortType = ATLParticipantPickerSortTypeFirstName;
+    self.rowHeight = 56.f;
+    self.cellClass = [ATLParticipantTableViewCell class];
     self.view.accessibilityLabel = ATLAddressBarAccessibilityLabel;
     self.view.translatesAutoresizingMaskIntoConstraints = NO;
     
@@ -72,6 +77,21 @@ static NSString *const ATLAddressBarParticipantAttributeName = @"ATLAddressBarPa
     
     [self configureLayoutConstraintsForAddressBarView];
     [self configureLayoutConstraintsForTableView];
+}
+
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    if (!self.hasAppeared) {
+        self.tableView.rowHeight = self.rowHeight;
+        [self.tableView registerClass:self.cellClass forCellReuseIdentifier:ATLMParticpantCellIdentifier];
+    }
+}
+
+-(void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    self.hasAppeared = YES;
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -159,6 +179,49 @@ static NSString *const ATLAddressBarParticipantAttributeName = @"ATLAddressBarPa
     [self.tableView reloadData];
 }
 
+#pragma mark - Public Setters
+
+- (void)setDefaultCellTitleColor:(UIColor *)defaultCellTitleColor
+{
+    _defaultCellTitleColor = defaultCellTitleColor;
+    [[ATLParticipantTableViewCell appearanceWhenContainedIn:[self class], nil] setTitleColor:self.defaultCellTitleColor];
+}
+
+- (void)setCellClass:(Class<ATLParticipantPresenting>)cellClass
+{
+    if (self.hasAppeared) {
+        @throw [NSException exceptionWithName:NSInternalInconsistencyException reason:@"Cannot change cell class after the view has been presented" userInfo:nil];
+    }
+    if (!class_conformsToProtocol(cellClass, @protocol(ATLParticipantPresenting))) {
+        @throw [NSException exceptionWithName:NSInternalInconsistencyException reason:@"Cell class must conform to ATLParticipantPresenting" userInfo:nil];
+    }
+    _cellClass = cellClass;
+}
+
+- (void)setRowHeight:(CGFloat)rowHeight
+{
+    if (self.hasAppeared) {
+        @throw [NSException exceptionWithName:NSInternalInconsistencyException reason:@"Cannot change row height after view has been presented" userInfo:nil];
+    }
+    _rowHeight = rowHeight;
+}
+
+- (void)setShouldShowParticipantAvatars:(BOOL)shouldShowParticipantAvatars
+{
+    if (self.hasAppeared) {
+        @throw [NSException exceptionWithName:NSInternalInconsistencyException reason:@"Cannot change participant avatar display after the view has been presented" userInfo:nil];
+    }
+    _shouldShowParticipantAvatars = shouldShowParticipantAvatars;
+}
+
+- (void)setSortType:(ATLParticipantPickerSortType)sortType
+{
+    if (self.hasAppeared) {
+        @throw [NSException exceptionWithName:NSInternalInconsistencyException reason:@"Cannot change sort type after view has been presented" userInfo:nil];
+    }
+    _sortType = sortType;
+}
+
 #pragma mark - UITableViewDataSource
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -190,6 +253,14 @@ static NSString *const ATLAddressBarParticipantAttributeName = @"ATLAddressBarPa
 {
     id<ATLParticipant> participant = self.participants[indexPath.row];
     [self selectParticipant:participant];
+}
+
+#pragma mark - Cell Configuration
+
+- (void)configureCell:(UITableViewCell<ATLParticipantPresenting> *)participantCell atIndexPath:(NSIndexPath *)indexPath
+{
+    id<ATLParticipant> participant = self.participants[indexPath.row];
+    [participantCell presentParticipant:participant withSortType:self.sortType shouldShowAvatarItem:self.shouldShowParticipantAvatars];
 }
 
 #pragma mark - UIScrollViewDelegate
@@ -488,7 +559,7 @@ static NSString *const ATLAddressBarParticipantAttributeName = @"ATLAddressBarPa
 {
     [self.addressBarView.addressBarTextView layoutIfNeeded]; // Layout text view so we can have an accurate width.
     
-    __block NSString *disabledString = [participants.firstObject firstName];
+    __block NSString *disabledString = [participants.firstObject displayName];
     NSMutableOrderedSet *mutableParticipants = [participants mutableCopy];
     [mutableParticipants removeObject:participants.firstObject];
     
@@ -499,9 +570,9 @@ static NSString *const ATLAddressBarParticipantAttributeName = @"ATLAddressBarPa
         if ([self textViewHasSpaceForParticipantString:truncatedString]) {
             remainingParticipants -= 1;
             othersString = [self otherStringWithRemainingParticipants:remainingParticipants];
-            NSString *expandedString = [NSString stringWithFormat:@"%@, %@ %@", disabledString, participant.firstName, othersString];
+            NSString *expandedString = [NSString stringWithFormat:@"%@, %@ %@", disabledString, participant.displayName, othersString];
             if ([self textViewHasSpaceForParticipantString:expandedString]) {
-                disabledString = [NSString stringWithFormat:@"%@, %@", disabledString, participant.firstName];
+                disabledString = [NSString stringWithFormat:@"%@, %@", disabledString, participant.displayName];
             } else {
                 disabledString = truncatedString;
                 *stop = YES;
