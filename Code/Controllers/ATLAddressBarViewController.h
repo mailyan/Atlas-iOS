@@ -146,14 +146,6 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (nonatomic) BOOL shouldShowParticipantAvatars;
 
-/**
- @abstract The `UITableViewCell` subclass for customizing the display of the participant.
- @discussion If you wish to provide your own custom class, your class must conform to the `ATLParticipantPresenting` protocol.
- @default `ATLParticipantTableViewCell`
- @raises NSInternalInconsistencyException Raised if the value is mutated after the receiver has been presented.
- */
-@property (nonatomic) Class<ATLParticipantPresenting> cellClass;
-
 ///------------------------------------
 // @name Managing Participant Selection
 ///------------------------------------
