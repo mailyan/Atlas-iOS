@@ -79,15 +79,6 @@ static NSString *const ATLAddressBarParticipantAttributeName = @"ATLAddressBarPa
     [self configureLayoutConstraintsForTableView];
 }
 
--(void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    if (!self.hasAppeared) {
-        self.tableView.rowHeight = self.rowHeight;
-        [self.tableView registerClass:self.cellClass forCellReuseIdentifier:ATLMParticpantCellIdentifier];
-    }
-}
-
 -(void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
@@ -99,6 +90,8 @@ static NSString *const ATLAddressBarParticipantAttributeName = @"ATLAddressBarPa
     [super viewWillAppear:animated];
     
     if (!self.hasAppeared) {
+        self.tableView.rowHeight = self.rowHeight;
+        [self.tableView registerClass:self.cellClass forCellReuseIdentifier:ATLMParticpantCellIdentifier];
         if (self.cellClass) {
             if([[NSBundle mainBundle] pathForResource:NSStringFromClass(self.cellClass) ofType:@"nib"])
                 [self.tableView registerNib:[UINib nibWithNibName:NSStringFromClass(self.cellClass) bundle:nil] forCellReuseIdentifier:ATLMParticpantCellIdentifier];
@@ -109,13 +102,6 @@ static NSString *const ATLAddressBarParticipantAttributeName = @"ATLAddressBarPa
             [self.tableView registerClass:[ATLParticipantTableViewCell class] forCellReuseIdentifier:ATLMParticpantCellIdentifier];
     }
 }
-
-- (void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-    self.hasAppeared = YES;
-}
-
 #pragma mark - Public Method Implementation
 
 - (void)disable
