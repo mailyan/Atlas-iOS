@@ -1,5 +1,23 @@
 # Atlas Changelog
 
+## 1.0.27
+
+### Bug Fixes
+
+* Fixes the crash related to the new `LYRQueryController` behavior introduced in LayerKit v0.23.0. [APPS-2560]
+
+## 1.0.26
+
+### Bug Fixes
+
+* Fix of the conversation list query in the `ATLConversationListViewController`. [APPS-2506]
+
+## 1.0.25
+
+### Enhancements
+
+* Upgraded `LayerKit` to version `0.22.0`. Due to breaking API changes introduced in LayerKit, affected code has been fixed.
+
 ## 1.0.24
 
 ### Enhancements
