@@ -523,7 +523,7 @@ static NSInteger const ATLPhotoActionSheet = 1000;
     if (self.conversation.participants.count <= 2) return NO;
     
     LYRMessage *message = [self.conversationDataSource messageAtCollectionViewSection:section];
-    if ([message.sender.userID isEqualToString:self.layerClient.authenticatedUser.userID]) return NO;
+    if (!message.sender.userID.length || [message.sender.userID isEqualToString:self.layerClient.authenticatedUser.userID]) return NO;
     if (section > ATLNumberOfSectionsBeforeFirstMessageSection) {
         LYRMessage *previousMessage = [self.conversationDataSource messageAtCollectionViewSection:section - 1];
         if ([previousMessage.sender.userID isEqualToString:message.sender.userID]) {
@@ -813,7 +813,7 @@ static NSInteger const ATLPhotoActionSheet = 1000;
     if (!self.conversation) return;
     if (!notification.object) return;
     if (![notification.object isEqual:self.conversation]) return;
-    
+
     LYRTypingIndicator *typingIndicator = notification.userInfo[LYRTypingIndicatorObjectUserInfoKey];
     if (typingIndicator.action == LYRTypingIndicatorActionBegin) {
         [self.typingParticipantIDs addObject:typingIndicator.sender.userID];
@@ -1239,35 +1239,14 @@ static NSInteger const ATLPhotoActionSheet = 1000;
     
     // ensure the animation's queue will resume
     if (self.collectionView) {
-        dispatch_suspend(self.animationQueue);
-        [self.collectionView performBatchUpdates:^{
-            for (ATLDataSourceChange *change in objectChanges) {
-                switch (change.type) {
-                    case LYRQueryControllerChangeTypeInsert:
-                        [self.collectionView insertSections:[NSIndexSet indexSetWithIndex:change.newIndex]];
-                        break;
-                        
-                    case LYRQueryControllerChangeTypeMove:
-                        [self.collectionView moveSection:change.currentIndex toSection:change.newIndex];
-                        break;
-                        
-                    case LYRQueryControllerChangeTypeDelete:
-                        [self.collectionView deleteSections:[NSIndexSet indexSetWithIndex:change.currentIndex]];
-                        break;
-                        
-                    case LYRQueryControllerChangeTypeUpdate:
-                        // If we call reloadSections: for a section that is already being animated due to another move (e.g. moving section 17 to 16 causes section 16 to be moved/animated to 17 and then we also reload section 16), UICollectionView will throw an exception. But since all onscreen sections will be reconfigured (see below) we don't need to reload the sections here anyway.
-                        break;
-                        
-                    default:
-                        break;
-                }
-            }
-        } completion:^(BOOL finished) {
-            dispatch_resume(self.animationQueue);
-        }];
+        [self.collectionView reloadData];
     }
-    [self configureCollectionViewElements];
+    @try {
+        [self configureCollectionViewElements];
+    } @catch (NSException *exception) {
+        
+    }
+    
     
     if (shouldScrollToBottom)  {
         // We can't get the content size from the collection view because it will be out-of-date due to the above updates, but we can get the update-to-date size from the layout.

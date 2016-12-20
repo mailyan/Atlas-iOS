@@ -194,6 +194,11 @@ NSString *const ATLConversationListViewControllerDeletionModeEveryone = @"Everyo
     [[NSNotificationCenter defaultCenter] removeObserver:self name:LYRClientDidSwitchSessionNotification object:self.layerClient];
 }
 
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 #pragma mark - Public Setters
 
 - (void)setCellClass:(Class<ATLConversationPresenting>)cellClass
