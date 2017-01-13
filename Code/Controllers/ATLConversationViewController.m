@@ -1239,13 +1239,35 @@ static NSInteger const ATLPhotoActionSheet = 1000;
     
     // ensure the animation's queue will resume
     if (self.collectionView) {
-        [self.collectionView reloadData];
+        dispatch_suspend(self.animationQueue);
+        [self.collectionView performBatchUpdates:^{
+            for (ATLDataSourceChange *change in objectChanges) {
+                switch (change.type) {
+                    case LYRQueryControllerChangeTypeInsert:
+                    [self.collectionView insertSections:[NSIndexSet indexSetWithIndex:change.newIndex]];
+                    break;
+                    
+                    case LYRQueryControllerChangeTypeMove:
+                    [self.collectionView moveSection:change.currentIndex toSection:change.newIndex];
+                    break;
+                    
+                    case LYRQueryControllerChangeTypeDelete:
+                    [self.collectionView deleteSections:[NSIndexSet indexSetWithIndex:change.currentIndex]];
+                    break;
+                    
+                    case LYRQueryControllerChangeTypeUpdate:
+                    // If we call reloadSections: for a section that is already being animated due to another move (e.g. moving section 17 to 16 causes section 16 to be moved/animated to 17 and then we also reload section 16), UICollectionView will throw an exception. But since all onscreen sections will be reconfigured (see below) we don't need to reload the sections here anyway.
+                    break;
+                    
+                    default:
+                    break;
+                }
+            }
+        } completion:^(BOOL finished) {
+            dispatch_resume(self.animationQueue);
+        }];
     }
-    @try {
-        [self configureCollectionViewElements];
-    } @catch (NSException *exception) {
-        
-    }
+    [self configureCollectionViewElements];
     
     
     if (shouldScrollToBottom)  {
