@@ -91,7 +91,7 @@ NSString *const ATLAvatarViewAccessibilityLabel = @"ATLAvatarViewAccessibilityLa
     
     // Presence Status View
     _presenceStatusView = [[ATLPresenceStatusView alloc] init];
-    _presenceStatusEnabled = true;
+    _presenceStatusEnabled = NO;
     [self addSubview:_presenceStatusView];
 }
 
