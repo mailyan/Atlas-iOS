@@ -118,12 +118,12 @@ NSString *const ATLAvatarViewAccessibilityLabel = @"ATLAvatarViewAccessibilityLa
     _avatarItem = avatarItem;
     if (avatarItem.avatarImage) {
         self.initialsLabel.text = nil;
-        self.image = avatarItem.avatarImage;
+        self.imageView.image = avatarItem.avatarImage;
     } else if ([avatarItem avatarImageURL]) {
         self.initialsLabel.text = nil;
         [self loadAvatarImageWithURL:[avatarItem avatarImageURL]];
     }  else if (avatarItem.avatarInitials) {
-        self.image = nil;
+        self.imageView.image = nil;
         self.initialsLabel.text = avatarItem.avatarInitials;
     }
 }

@@ -46,6 +46,11 @@
 
 @optional
 /**
+ @abstract Returns the presence status information.
+*/
+@property (nonatomic, readonly, assign) LYRIdentityPresenceStatus presenceStatus;
+
+/**
  @abstract Asynchronously fetches remote avatar image of the receiver
  */
 - (void)fetchAvatarWithAvatarUR:(NSURL*_Nullable) avatarURL completion:(nullable void(^)(UIImage*_Nullable avatar)) completion;
